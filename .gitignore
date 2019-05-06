@@ -1,7 +1,7 @@
 # original #########################################
 *.mhd
 *.raw
-
+results/calc_init_val/*
 headers/mist-v1.6.0/*
 !.gitkeep
 

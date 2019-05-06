@@ -3,13 +3,12 @@
 #define ITK_IO_FACTORY_REGISTER_MANAGER
 #include <vector>
 #include <iterator>
-#include <fstream>
-#include <string>
 #include <itkImage.h>
 #include <itkImportImageFilter.h>
 #include <itkImageFileReader.h>
 #include <itkImageFileWriter.h>
 #include <itkImageRegionConstIterator.h>
+#include <itkImageRegionIterator.h>
 
 template<unsigned int Dim>
 class ImageIO{
@@ -34,64 +33,6 @@ class ImageIO{
     return importFilter->GetOutput();
   }
   
-  template<class T, class U>
-  bool contain(const std::basic_string<T>& s, const U& v) {
-	  //https://marycore.jp/prog/cpp/std-string-contains/
-	  return s.find(v) != std::basic_string<T>::npos;
-  }
-
-  void load_meta_data(std::string meta_path, std::list<std::string> &meta_data_list) {
-	  /*
-	  *  @meta_path: input path to file that contained file list
-	  *  @meta_data_list: data list that contained file list
-	  */
-	  std::string filename_tmp;
-	  std::ifstream ifs(meta_path);
-	  if (ifs.fail()) {
-		  std::cerr << "Cannot open file: " << meta_path << std::endl;
-		  return;
-	  }
-	  while (getline(ifs, filename_tmp)) {
-		  meta_data_list.push_back(filename_tmp);
-	  }
-	  ifs.close();
-
-	  return;
-  }
-
-  void save_meta_data(std::string meta_path, std::list<std::string> &meta_data_list) {
-
-	  std::ofstream ofs(meta_path);
-	  if (ofs.fail()) {
-		  std::cerr << "Cannot open file: " << meta_path << std::endl;
-		  return;
-	  }
-	  for (auto itr = meta_data_list.begin(); itr != meta_data_list.end(); ++itr) {
-		  ofs << *itr << std::endl;
-	  }
-	  ofs.close();
-
-	  return;
-  }
-
-  void change_meta_data(std::string meta_path) {
-
-	  std::list<std::string> meta_data;
-	  load_meta_data(meta_path, meta_data);
-	  for (auto itr = meta_data.begin(); itr != meta_data.end(); ++itr) {
-		  if (contain(*itr, "Offset")) {
-			  *itr = "Offset = ";
-			  for (int i = 0; i < Dim-1; i++) {
-				  *itr += std::to_string(origin[i]) + " ";
-			  }
-			  *itr += std::to_string(origin[Dim - 1]);
-			  break;
-		  }
-	  }
-	  save_meta_data(meta_path, meta_data);
-	  return;
-  }
-
 public:
 
   ImageIO(){}
@@ -107,9 +48,11 @@ public:
   double Spacing(unsigned int i) const { return spacing[i]; }
 
   //Set method
+  void SetIndex(unsigned int i, unsigned int val) { index.SetElement(i, val); }
   void SetSize(unsigned int i, unsigned int val){ size.SetElement(i, val); }
   void SetOrigin(unsigned int i, double val){ origin.SetElement(i, val); }
   void SetSpacing(unsigned int i, double val){ spacing.SetElement(i, val); }
+
   unsigned int NumOfPixels(){ return numOfPixels; }
 
   void Refer(const std::string &referenceFilename)
@@ -162,13 +105,30 @@ public:
     writer->SetUseCompression(UseCompression);
     try {
       writer->Update();
-	  change_meta_data(outputFilename);
       std::cout << "write: " << outputFilename << std::endl;
     }
     catch (itk::ExceptionObject e)
     {
       std::cout << e << std::endl;
     }
+  }
+
+  template<class PixelType>
+  typename itk::Image<PixelType, Dim>::Pointer ConvertVector2Itk(std::vector<PixelType> &Image)
+  {
+	  return ptr2img(Image.data());
+  }
+
+  template<class PixelType>
+  void ConvertItk2Vector(typename itk::Image<PixelType, Dim>::Pointer ptr, std::vector<PixelType> &Image)
+  {
+	  typedef itk::Image<PixelType, Dim> ImageType;
+	  Image.resize(numOfPixels);
+	  itk::ImageRegionIterator<ImageType> itr(ptr, ptr->GetLargestPossibleRegion());
+	  size_t i = 0;
+	  for(auto it = itr.Begin(); it != itr.End(); ++it){
+		  Image.at(i++) = it.Get();
+	  }
   }
 
 };

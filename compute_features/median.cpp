@@ -1,9 +1,9 @@
 #define ITK_IO_FACTORY_REGISTER_MANAGER
 
 #include <iostream>
-#include "itkImageFileReader.h"
-#include "itkImageFileWriter.h"
-#include "itkMedianImageFilter.h"
+#include <itkImageFileReader.h>
+#include <itkImageFileWriter.h>
+#include <itkMedianImageFilter.h>
 #include "dataIO.h"
 #include "configs.h"
 
