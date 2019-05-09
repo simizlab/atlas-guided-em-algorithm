@@ -7,14 +7,16 @@
 #include "configs.h"
 
 typedef unsigned char label_t;
+typedef unsigned char mask_t;
 typedef double feat_t;
 typedef double atlas_t;
 
 int main(int argc, char **argv) {
 
-	if(argc != 7) {
+	if(argc != 8) {
 		std::cerr << "Usage:" << std::endl;
-		std::cerr << argv[0] << " <input feature directory> <input label directory> " 
+		std::cerr << argv[0] << " <input feature directory> <input label directory> "
+				  << " <input abdominal cavity mask directory> "
 				  << " <output directory> <filename list> <feature name list> <distance margin>"
 			      << std::endl;
 		return EXIT_FAILURE;
@@ -23,10 +25,11 @@ int main(int argc, char **argv) {
 	std::cout << "----- Read data list -----" << std::endl;
 	const std::string input_feat_dir = std::string(argv[1]) + "/";
 	const std::string input_label_dir = std::string(argv[2]) + "/";
-	const std::string output_dir = std::string(argv[3]) + "/";
-	const std::string filename_list_path = argv[4];
-	const std::string feature_name_list_path = argv[5];
-	const double margin = std::stod(argv[6]);
+	const std::string input_abd_mask_dir = std::string(argv[3]) + "/";
+	const std::string output_dir = std::string(argv[4]) + "/";
+	const std::string filename_list_path = argv[5];
+	const std::string feature_name_list_path = argv[6];
+	const double margin = std::stod(argv[7]);
 
 	std::list<std::string> filename_list;
 	std::list<std::string> feature_name_list;
@@ -66,16 +69,20 @@ int main(int argc, char **argv) {
 			const double x_spacing = label_mhd.Spacing(0);
 			const double y_spacing = label_mhd.Spacing(1);
 			const double z_spacing = label_mhd.Spacing(2);
+			
+			std::vector<mask_t> abd_mask_img;
+			ImageIO<NDIMS> abd_mask_mhd;
+			abd_mask_mhd.Read(abd_mask_img, input_abd_mask_dir + *case_itr);
 
 			std::cout << "----- Preprocessing for label -----" << std::endl;
-			if (l == NUM_LABELS - 1) {
+			if (l == NUM_LABELS - 1) { // for others
 				for (int s = 0; s < se; s++) {
 					if (label_img.at(s) == REMOVE_LABEL_NUM) label_img.at(s) = 0;
-					else if (!label_img.at(s)) label_img.at(s) = 1;
+					else if (abd_mask_img.at(s) && !label_img.at(s)) label_img.at(s) = 1;
 					else label_img.at(s) = 0;
 				}
 			}
-			else {
+			else { // for organs
 				for (int s = 0; s < se; s++) {
 					if (label_img.at(s) == l + 1) label_img.at(s) = 1;
 					else label_img.at(s) = 0;
@@ -117,21 +124,19 @@ int main(int argc, char **argv) {
 						}
 					}
 				}
-				feat_mean /= label_counter;
-				for (int f = 0; f < num_features; f++) {
-					for (int ff = 0; ff < num_features; ff++) {
-						feat_covariance(f, ff) = feat_covariance(f, ff) / label_counter - feat_mean(f, 0) * feat_mean(ff, 0);
-					}
+			}
+			feat_mean /= label_counter;
+			for (int f = 0; f < num_features; f++) {
+				for (int ff = 0; ff < num_features; ff++) {
+					feat_covariance(f, ff) = feat_covariance(f, ff) / label_counter - feat_mean(f, 0) * feat_mean(ff, 0);
 				}
 			}
-
 			total_feat_mean += feat_mean;
 			total_feat_covariance += feat_covariance;
 
 		}/* Case loop */
 		total_feat_mean /= (double)num_cases;
 		total_feat_covariance /= (double)num_cases;
-
 		std::cout << "----- Save param -----" << std::endl;
 		std::string result_dir = output_dir + LABEL_NAMES[l];
 		make_dir(result_dir);

@@ -2,6 +2,7 @@
 *.mhd
 *.raw
 results/calc_init_val/*
+results/apply_em_algorithm/*
 headers/mist-v1.6.0/*
 !.gitkeep
 
