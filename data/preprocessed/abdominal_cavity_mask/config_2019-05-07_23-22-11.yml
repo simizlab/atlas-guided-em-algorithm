@@ -1,0 +1,2 @@
+input_dir: I:\project\atlas-guided-em-algorithm\data\raw\abdominal_cavity_mask
+output_dir: I:\project\atlas-guided-em-algorithm\data\preprocessed\abdominal_cavity_mask
