@@ -7,6 +7,7 @@
 #include "maximum_a_posteriori.h"
 
 typedef unsigned char mask_t;
+typedef unsigned char label_t;
 typedef double feat_t;
 typedef double atlas_t;
 
@@ -52,7 +53,7 @@ int main(int argc, char **argv) {
 		read_raw_to_eigen(covariance[l], input_param_dir + TESTTIME_LABEL_NAMES[l] + "/estimated_covariance_param.raw", num_features);
 	}
 
-	std::cout << "----- Apply em algorithm -----" << std::endl;
+	std::cout << "----- Apply maximum a posteriori -----" << std::endl;
 	for (auto case_itr = test_filename_list.begin(); case_itr != test_filename_list.end(); ++case_itr) {
 		std::cout << "Case: " << *case_itr << std::endl;
 		std::vector<mask_t> abd_mask_img;
@@ -136,10 +137,68 @@ int main(int argc, char **argv) {
 		}
 
 		// Normalize atlas
+		std::cout << "----- Normalize atlas probability -----" << std::endl;
+		maximum_a_posteriori::normalize_probability(atlas_array, num_pixel, TESTTIME_NUM_LABELS);
 
+		// Calc posterior probability
+		std::vector<double> posterior(TESTTIME_NUM_LABELS*num_pixel);
+		for (int l = 0; l < TESTTIME_NUM_LABELS; l++) {
+			std::cout << "Calc poterior probability at: " << TESTTIME_LABEL_NAMES[l] << std::endl;
+			atlas_t *atlas_tmp = atlas_array.data() + l*num_pixel;
+			double *posterior_tmp = posterior.data() + l*num_pixel;
+			maximum_a_posteriori::calculate_posterior(feature_array,
+														mean[l], 
+														covariance[l],
+														atlas_tmp,
+														num_pixel,
+														num_features,
+														posterior_tmp);
+		} /* Label loop */
+		
+		 // Normalize posterior
+		std::cout << "----- Normalize posterior probability -----" << std::endl;
+		maximum_a_posteriori::normalize_probability(posterior, num_pixel, TESTTIME_NUM_LABELS);
 
-	
-	}
+		for (int l = 0; l < TESTTIME_NUM_LABELS; l++) {
+			std::cout << "Save posterior: " << TESTTIME_LABEL_NAMES[l] << std::endl;
+			double *posterior_tmp = posterior.data() + l*num_pixel;
+			std::vector<double> posterior_img(abd_mask_img.size(), 0);
+
+			size_t tmp = 0;
+			for (int s = 0; s < se; s++) {
+				if (abd_mask_img.at(s)) {
+					posterior_img.at(s) = posterior.at(tmp++);
+				}
+			}
+			std::string result_dir = output_dir + *case_itr + "/posterior/";
+			make_dir(result_dir);
+			save_vector(result_dir + TESTTIME_LABEL_NAMES[l] + ".mhd", 
+						posterior_img, xe, ye, ze,
+						x_spacing, y_spacing, z_spacing);
+		} /* Label loop */
+		
+		std::cout << "MAP Segmentation" << std::endl;
+		std::vector<label_t> label_array(num_pixel);
+		maximum_a_posteriori::segmentation(posterior, num_pixel, TESTTIME_NUM_LABELS, label_array);
+
+		std::vector<label_t> label_img(abd_mask_img.size(), 0);
+		size_t tmp = 0;
+		for (int s = 0; s < se; s++) {
+			if (abd_mask_img.at(s)) {
+				label_img.at(s) = label_array.at(tmp++);
+			}
+		}
+		for (int s = 0; s < se; s++) {
+			if (label_img.at(s) >= REMOVE_LABEL_NUM) {
+				label_img.at(s) += 1;
+			}
+		}
+		std::string result_dir = output_dir + *case_itr;
+		make_dir(result_dir);
+		save_vector(result_dir + "/map_segmentation.mhd",
+			label_img, xe, ye, ze,
+			x_spacing, y_spacing, z_spacing);
+	} /* Case loop */
 
 	return EXIT_SUCCESS;
 }
