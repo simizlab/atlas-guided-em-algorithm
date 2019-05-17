@@ -1,0 +1,49 @@
+{0,0x0022,0x0001,US,1,"""Light Path Filter Pass-Through Wavelength""",},//
+{0,0x0022,0x0002,US,2,"""Light Path Filter Pass Band""",},//
+{0,0x0022,0x0003,US,1,"""Image Path Filter Pass-Through Wavelength""",},//
+{0,0x0022,0x0004,US,2,"""Image Path Filter Pass Band""",},//
+{0,0x0022,0x0005,CS,1,"""Patient Eye Movement Commanded""",},//
+{0,0x0022,0x0006,SQ,1,"""Patient Eye Movement Command Code Sequence""",},//
+{0,0x0022,0x0007,FL,1,"""Spherical Lens Power""",},//
+{0,0x0022,0x0008,FL,1,"""Cylinder Lens Power""",},//
+{0,0x0022,0x0009,FL,1,"""Cylinder Axis""",},//
+{0,0x0022,0x000A,FL,1,"""Emmetropic Magnification""",},//
+{0,0x0022,0x000B,FL,1,"""Intra Ocular Pressure""",},//
+{0,0x0022,0x000C,FL,1,"""Horizontal Field of View""",},//
+{0,0x0022,0x000D,CS,1,"""Pupil Dilated""",},//
+{0,0x0022,0x000E,FL,1,"""Degree of Dilation""",},//
+{0,0x0022,0x0010,FL,1,"""Stereo Baseline Angle""",},//
+{0,0x0022,0x0011,FL,1,"""Stereo Baseline Displacement""",},//
+{0,0x0022,0x0012,FL,1,"""Stereo Horizontal Pixel Offset""",},//
+{0,0x0022,0x0013,FL,1,"""Stereo Vertical Pixel Offset""",},//
+{0,0x0022,0x0014,FL,1,"""Stereo Rotation""",},//
+{0,0x0022,0x0015,SQ,1,"""Acquisition Device Type Code Sequence""",},//
+{0,0x0022,0x0016,SQ,1,"""Illumination Type Code Sequence""",},//
+{0,0x0022,0x0017,SQ,1,"""Light Path Filter Type Stack Code Sequence""",},//
+{0,0x0022,0x0018,SQ,1,"""Image Path Filter Type Stack Code Sequence""",},//
+{0,0x0022,0x0019,SQ,1,"""Lenses Code Sequence""",},//
+{0,0x0022,0x001A,SQ,1,"""Channel Description Code Sequence""",},//
+{0,0x0022,0x001B,SQ,1,"""Refractive State Sequence""",},//
+{0,0x0022,0x001C,SQ,1,"""Mydriatic Agent Code Sequence""",},//
+{0,0x0022,0x001D,SQ,1,"""Relative Image Position Code Sequence""",},//
+{0,0x0022,0x0020,SQ,1,"""Stereo Pairs Sequence""",},//
+{0,0x0022,0x0021,SQ,1,"""Left Image Sequence""",},//
+{0,0x0022,0x0022,SQ,1,"""Right Image Sequence""",},//
+{0,0x0022,0x0030,FL,1,"""Axial Length of the Eye""",},//
+{0,0x0022,0x0031,SQ,1,"""Ophthalmic Frame Location Sequence""",},//
+{0,0x0022,0x0032,FL,2,"""Reference Coordinates""",},//
+{0,0x0022,0x0035,FL,1,"""Depth Spatial Resolution""",},//
+{0,0x0022,0x0036,FL,1,"""Maximum Depth Distortion""",},//
+{0,0x0022,0x0037,FL,1,"""Along-scan Spatial Resolution""",},//
+{0,0x0022,0x0038,FL,1,"""Maximum Along-scan Distortion""",},//
+{0,0x0022,0x0039,CS,1,"""Ophthalmic Image Orientation""",},//
+{0,0x0022,0x0041,FL,1,"""Depth of Transverse Image""",},//
+{0,0x0022,0x0042,SQ,1,"""Mydriatic Agent Concentration Units Sequence""",},//
+{0,0x0022,0x0048,FL,1,"""Across-scan Spatial Resolution""",},//
+{0,0x0022,0x0049,FL,1,"""Maximum Across-scan Distortion""",},//
+{0,0x0022,0x004E,DS,1,"""Mydriatic Agent Concentration""",},//
+{0,0x0022,0x0055,FL,1,"""Illumination Wave Length""",},//
+{0,0x0022,0x0056,FL,1,"""Illumination Power""",},//
+{0,0x0022,0x0057,FL,1,"""Illumination Bandwidth""",},//
+{0,0x0022,0x0058,SQ,1,"""Mydriatic Agent Sequence""",},//
+{0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//

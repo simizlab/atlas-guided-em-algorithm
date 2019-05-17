@@ -1,0 +1,292 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0106 
+header_name {.h} 
+code_name {.cpp}
+decl {\#include "image_test.h"} {public
+} 
+
+class image_test_window {open
+} {
+  Function {image_test_window()} {open
+  } {
+    Fl_Window main_window {open
+      xywh {461 365 551 568} type Double visible
+    } {
+      Fl_Group {} {
+        xywh {5 30 540 530} box DOWN_BOX
+      } {
+        Fl_Box draw_area {
+          label label
+          xywh {10 35 530 520} box FLAT_BOX color 40
+          class image_draw_area
+        }
+      }
+      Fl_Menu_Bar {} {open
+        xywh {0 0 550 30} box FLAT_BOX
+      } {
+        submenu {} {
+          label {&File}
+          xywh {0 0 100 20}
+        } {
+          submenu {} {
+            label {&Open} open
+            xywh {0 0 100 20}
+          } {
+            menuitem {} {
+              label {Open &Image}
+              callback {const char *filename = fl_file_chooser( "Open Image", "Image File (*.{jpg,jpeg,bmp,tif,tiff,png,gif,pbm,pgm,ppm,pnm,tga})", "" );
+if( filename == NULL ) return;
+
+read_image_test( filename );
+
+draw_area->redraw( );
+Fl::wait( 0 );}
+              xywh {5 5 100 20}
+              code0 {\#include <FL/Fl_File_Chooser.H>}
+            }
+            menuitem {} {
+              label {Open &DICOM}
+              callback {const char *filename = fl_file_chooser( "Open DICOM", "DICOM File (*)", "" );
+if( filename == NULL ) return;
+
+read_dicom_test( filename );
+
+draw_area->redraw( );
+Fl::wait( 0 );}
+              xywh {15 15 100 20}
+            }
+          }
+          submenu {} {
+            label {&Save} open
+            xywh {10 10 100 20} divider
+          } {
+            menuitem {} {
+              label {Save &Image}
+              callback {const char *filename = fl_file_chooser( "Save Image", "Image File (*.{jpg,jpeg,bmp,tif,tiff,png,gif,pbm,pgm,ppm,pnm,tga})", "" );
+if( filename == NULL ) return;
+
+write_image_test( filename );
+
+draw_area->redraw( );
+Fl::wait( 0 );}
+              xywh {15 15 100 20}
+            }
+            menuitem {} {
+              label {Save &DICOM}
+              callback {const char *filename = fl_file_chooser( "Save DICOM", "DICOM File (*)", "" );
+if( filename == NULL ) return;
+
+write_dicom_test( filename );
+
+draw_area->redraw( );
+Fl::wait( 0 );}
+              xywh {25 25 100 20}
+            }
+          }
+          menuitem {} {
+            label {&Exit}
+            callback {main_window->hide( );}
+            xywh {0 0 100 20}
+          }
+        }
+        submenu {} {
+          label {&Edit} open
+          xywh {0 0 100 20}
+        } {
+          menuitem {} {
+            label {Euclidean Distance Transform}
+            callback {euclidean_distance_transform_test( );}
+            xywh {0 0 100 20}
+          }
+          menuitem {} {
+            label {Euclidean Skeleton}
+            callback {euclidean_distance_skeleton_test( );}
+            xywh {10 10 100 20}
+          }
+          menuitem {} {
+            label {Figure Decomposition}
+            callback {figure_decomposition_test( );}
+            xywh {10 10 100 20}
+          }
+          menuitem {} {
+            label Thresholding
+            callback {thresholding_test( );}
+            xywh {20 20 100 20}
+          }
+          menuitem {} {
+            label {Labeling 4}
+            callback {labeling4_test( );}
+            xywh {20 20 100 20}
+          }
+          menuitem {} {
+            label {Labeling 8}
+            callback {labeling8_test( );}
+            xywh {30 30 100 20}
+          }
+          menuitem {} {
+            label Thinning
+            callback {thinning_test( );}
+            xywh {40 40 100 20}
+          }
+          menuitem {} {
+            label Median
+            callback {median_test( );}
+            xywh {90 90 100 20}
+          }
+          menuitem {} {
+            label Mode
+            callback {mode_test( );}
+            xywh {100 100 100 20}
+          }
+          submenu {} {
+            label Morphology
+            xywh {0 0 100 20}
+          } {
+            menuitem {} {
+              label {Erosion Circle}
+              callback {erosion_test( );}
+              xywh {55 55 100 20}
+            }
+            menuitem {} {
+              label {Dilation Circle}
+              callback {dilation_test( );}
+              xywh {65 65 100 20}
+            }
+            menuitem {} {
+              label {Opening Circle}
+              callback {opening_test( );}
+              xywh {75 75 100 20}
+            }
+            menuitem {} {
+              label {Closing Circle}
+              callback {closing_test( );}
+              xywh {85 85 100 20}
+            }
+            menuitem {} {
+              label {Erosion Triangle}
+              callback {erosion_triangle_test( );}
+              xywh {65 65 100 20}
+            }
+            menuitem {} {
+              label {Dilation Triangle}
+              callback {dilation_triangle_test( );}
+              xywh {75 75 100 20}
+            }
+            menuitem {} {
+              label {Opening Triangle}
+              callback {opening_triangle_test( );}
+              xywh {85 85 100 20}
+            }
+            menuitem {} {
+              label {Closing Triangle}
+              callback {closing_triangle_test( );}
+              xywh {95 95 100 20}
+            }
+          }
+          submenu {} {
+            label Resolution open
+            xywh {0 0 100 20}
+          } {
+            menuitem {} {
+              label {Reso up with nearest}
+              callback {interpolate_test( 0, true );}
+              xywh {95 95 100 20}
+            }
+            menuitem {} {
+              label {Reso up with mean}
+              callback {interpolate_test( 1, true );}
+              xywh {105 105 100 20}
+            }
+            menuitem {} {
+              label {Reso up with linear}
+              callback {interpolate_test( 2, true );}
+              xywh {105 105 100 20}
+            }
+            menuitem {} {
+              label {Reso up with cubic}
+              callback {interpolate_test( 3, true );}
+              xywh {115 115 100 20}
+            }
+            menuitem {} {
+              label {Reso up with sinc}
+              callback {interpolate_test( 4, true );}
+              xywh {125 125 100 20}
+            }
+            menuitem {} {
+              label {Reso up with bspline}
+              callback {interpolate_test( 5, true );} selected
+              xywh {135 135 100 20}
+            }
+            menuitem {} {
+              label {Reso down with nearest}
+              callback {interpolate_test( 0, false );}
+              xywh {105 105 100 20}
+            }
+            menuitem {} {
+              label {Reso down with mean}
+              callback {interpolate_test( 1, false );}
+              xywh {125 125 100 20}
+            }
+            menuitem {} {
+              label {Reso down with linear}
+              callback {interpolate_test( 2, false );}
+              xywh {115 115 100 20}
+            }
+            menuitem {} {
+              label {Reso down with cubic}
+              callback {interpolate_test( 3, false );}
+              xywh {125 125 100 20}
+            }
+            menuitem {} {
+              label {Reso down with sinc}
+              callback {interpolate_test( 4, false );}
+              xywh {135 135 100 20}
+            }
+            menuitem {} {
+              label {Reso down with bspline}
+              callback {interpolate_test( 5, false );}
+              xywh {135 135 100 20}
+            }
+          }
+          menuitem {} {
+            label {Interlace Even}
+            callback {interlace_test( false );}
+            xywh {30 30 100 20}
+          }
+          menuitem {} {
+            label {Interlace Odd}
+            callback {interlace_test( true );}
+            xywh {40 40 100 20}
+          }
+          menuitem {} {
+            label Expand
+            callback {expand_test( );}
+            xywh {60 60 100 20}
+          }
+          menuitem {} {
+            label Shrink
+            callback {shrink_test( );}
+            xywh {70 70 100 20}
+          }
+          menuitem {} {
+            label {Boundary 4}
+            callback {boundary4_test( );}
+            xywh {40 40 100 20}
+          }
+          menuitem {} {
+            label {Boundary 8}
+            callback {boundary8_test( );}
+            xywh {50 50 100 20}
+          }
+        }
+      }
+      Fl_Progress progress_bar {
+        xywh {125 5 420 20} box PLASTIC_THIN_UP_BOX selection_color 1 hide
+      }
+    }
+  }
+  Function {show( )} {open return_type void
+  } {
+    code {main_window->show( );} {}
+  }
+} 

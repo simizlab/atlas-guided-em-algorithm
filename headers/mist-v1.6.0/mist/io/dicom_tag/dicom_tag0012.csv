@@ -1,0 +1,16 @@
+{0,0x0012,0x0010,LO,1,"""Clinical Trial Sponsor Name""",},//
+{0,0x0012,0x0020,LO,1,"""Clinical Trial Protocol ID""",},//
+{0,0x0012,0x0021,LO,1,"""Clinical Trial Protocol Name""",},//
+{0,0x0012,0x0030,LO,1,"""Clinical Trial Site ID""",},//
+{0,0x0012,0x0031,LO,1,"""Clinical Trial Site Name""",},//
+{0,0x0012,0x0040,LO,1,"""Clinical Trial Subject ID""",},//
+{0,0x0012,0x0042,LO,1,"""Clinical Trial Subject Reading ID""",},//
+{0,0x0012,0x0050,LO,1,"""Clinical Trial Time Point ID""",},//
+{0,0x0012,0x0051,ST,1,"""Clinical Trial Time Point Description""",},//
+{0,0x0012,0x0060,LO,1,"""Clinical Trial Coordinating Center Name""",},//
+{0,0x0012,0x0062,CS,1,"""Patient Identity Removed""",},//
+{0,0x0012,0x0063,LO,-1,"""De-identification Method""",},//
+{0,0x0012,0x0064,SQ,1,"""De-identification Method Code Sequence""",},//
+{0,0x0012,0x0071,LO,1,"""Clinical Trial Series ID""",},//
+{0,0x0012,0x0072,LO,1,"""Clinical Trial Series Description""",},//
+{0,0x0000,0x0000,UNKNOWN,0,"""Data End""",},//
