@@ -198,6 +198,8 @@ int main(int argc, char **argv) {
 		save_vector(result_dir + "/map_segmentation.mhd",
 			label_img, xe, ye, ze,
 			x_spacing, y_spacing, z_spacing);
+
+		std::cout << "Start evaluations" << std::endl;
 	} /* Case loop */
 
 	return EXIT_SUCCESS;
