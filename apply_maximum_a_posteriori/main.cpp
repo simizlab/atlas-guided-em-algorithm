@@ -1,10 +1,12 @@
 #include <iostream>
+#include <fstream>
 #include <mist/mist.h>
 #include <Eigen/Core>
 #include "ItkImageIO.h"
 #include "dataIO.h"
 #include "configs.h"
 #include "maximum_a_posteriori.h"
+#include "evaluations.h"
 
 typedef unsigned char mask_t;
 typedef unsigned char label_t;
@@ -117,7 +119,7 @@ int main(int argc, char **argv) {
 					}
 				}
 			}/* Label loop */
-			// If atlas is 0, label is assigned others class
+			 // If atlas is 0, label is assigned others class
 			for (int n = 0; n < num_pixel; n++) {
 				double tmp = 0.;
 				for (int l = 0; l < TESTTIME_NUM_LABELS; l++) {
@@ -147,15 +149,15 @@ int main(int argc, char **argv) {
 			atlas_t *atlas_tmp = atlas_array.data() + l*num_pixel;
 			double *posterior_tmp = posterior.data() + l*num_pixel;
 			maximum_a_posteriori::calculate_posterior(feature_array,
-														mean[l], 
-														covariance[l],
-														atlas_tmp,
-														num_pixel,
-														num_features,
-														posterior_tmp);
+				mean[l],
+				covariance[l],
+				atlas_tmp,
+				num_pixel,
+				num_features,
+				posterior_tmp);
 		} /* Label loop */
-		
-		 // Normalize posterior
+
+		  // Normalize posterior
 		std::cout << "----- Normalize posterior probability -----" << std::endl;
 		maximum_a_posteriori::normalize_probability(posterior, num_pixel, TESTTIME_NUM_LABELS);
 
@@ -172,12 +174,12 @@ int main(int argc, char **argv) {
 			}
 			std::string result_dir = output_dir + *case_itr + "/posterior/";
 			make_dir(result_dir);
-			save_vector(result_dir + TESTTIME_LABEL_NAMES[l] + ".mhd", 
-						posterior_img, xe, ye, ze,
-						x_spacing, y_spacing, z_spacing);
+			save_vector(result_dir + TESTTIME_LABEL_NAMES[l] + ".mhd",
+				posterior_img, xe, ye, ze,
+				x_spacing, y_spacing, z_spacing);
 		} /* Label loop */
-		
-		std::cout << "MAP Segmentation" << std::endl;
+
+		std::cout << "----- MAP Segmentation -----" << std::endl;
 		std::vector<label_t> label_array(num_pixel);
 		maximum_a_posteriori::segmentation(posterior, num_pixel, TESTTIME_NUM_LABELS, label_array);
 
@@ -188,18 +190,68 @@ int main(int argc, char **argv) {
 				label_img.at(s) = label_array.at(tmp++);
 			}
 		}
+		// correct label misalignment
 		for (int s = 0; s < se; s++) {
-			if (label_img.at(s) >= REMOVE_LABEL_NUM) {
+			if (label_img.at(s) >= IGNORED_LABEL_NUM) {
 				label_img.at(s) += 1;
 			}
 		}
+
 		std::string result_dir = output_dir + *case_itr;
 		make_dir(result_dir);
 		save_vector(result_dir + "/map_segmentation.mhd",
 			label_img, xe, ye, ze,
 			x_spacing, y_spacing, z_spacing);
 
-		std::cout << "Start evaluations" << std::endl;
+		std::cout << "----- Start evaluations -----" << std::endl;
+		std::ofstream ofs(result_dir + "/results.csv");
+		ofs << "organs, JI, predict ratio, true ratio, cross, join, fp, fn,"
+			<< "total num pixel in mask, num predicted pixel,"
+			<< "num gt pixel" << std::endl;
+		std::vector<label_t> gt_img;
+		ImageIO<NDIMS> gt_mhd;
+		gt_mhd.Read(gt_img, input_true_label_dir + *case_itr);
+		for (int l = 0; l < NUM_LABELS; l++) {
+			if (l == IGNORED_LABEL_NUM-1) continue;
+			std::vector<label_t> predict_tmp(se, 0);
+			std::vector<label_t> gt_tmp(se, 0);
+			if (l != NUM_LABELS - 1) { // for organs
+				for (int s = 0; s < se; s++) {
+					if (label_img.at(s) == l + 1) {
+						predict_tmp.at(s) = 1;
+					}
+					if (gt_img.at(s) == l + 1) {
+						gt_tmp.at(s) = 1;
+					}
+				}
+			}
+			else { // for others
+				for (int s = 0; s < se; s++) {
+					if (abd_mask_img.at(s)) {
+						if (label_img.at(s) == l + 1) { // l+1 = NUM_LABELS
+							predict_tmp.at(s) = 1;
+						}
+						if (gt_img.at(s) == 0) {
+							gt_tmp.at(s) = 1;
+						}
+					}
+				}
+			}
+
+			std::vector<size_t> results;
+			double ji = calc_jaccard_index(predict_tmp, gt_tmp, abd_mask_img, results);
+			std::cout << "Label: " << LABEL_NAMES[l] << std::endl;
+			std::cout << "JI: " << ji << std::endl;
+			ofs << LABEL_NAMES[l] << "," << ji << ","
+				<< (double)results[5] / (double)results[4] << ","
+				<< (double)results[6] / (double)results[4] << ",";
+			for (auto itr = results.begin(); itr != results.end(); itr++) {
+				ofs << *itr << ",";
+			}
+			ofs << std::endl;
+		} /* Label loop */
+		ofs.close();
+
 	} /* Case loop */
 
 	return EXIT_SUCCESS;

@@ -24,7 +24,7 @@ const int NUM_LABELS = sizeof(LABEL_NAMES) / sizeof(LABEL_NAMES[0]);
 const int REMOVE_LABEL_NUM = 14;
 
 // Ignored label i.e. hearts
-const int IGNORED_LABEL = 5;
+const int IGNORED_LABEL_NUM = 5;
 
 const std::string TESTTIME_LABEL_NAMES[] = { "liver",
 											"spleen",
