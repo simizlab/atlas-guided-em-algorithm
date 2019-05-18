@@ -140,6 +140,8 @@ int main(int argc, char **argv) {
 		std::cout << "----- Save param -----" << std::endl;
 		std::string result_dir = output_dir + LABEL_NAMES[l];
 		make_dir(result_dir);
+		save_param_as_csv(total_feat_mean, result_dir + "/mean_param.csv");
+		save_param_as_csv(total_feat_covariance, result_dir + "/covariance_param.csv");
 		write_raw_and_txt(total_feat_mean, result_dir + "/mean_param");
 		write_raw_and_txt(total_feat_covariance, result_dir + "/covariance_param");
 

@@ -155,6 +155,8 @@ int main(int argc, char **argv) {
 		for (int l = 0; l < TESTTIME_NUM_LABELS; l++) {
 			std::string result_dir = output_dir + TESTTIME_LABEL_NAMES[l];
 			make_dir(result_dir);
+			save_param_as_csv(mean[l], result_dir + "/estimated_mean_param.csv");
+			save_param_as_csv(covariance[l], result_dir + "/estimated_covariance_param.csv");
 			write_raw_and_txt(mean[l], result_dir + "/estimated_mean_param");
 			write_raw_and_txt(covariance[l], result_dir + "/estimated_covariance_param");
 		} /* Label loop */

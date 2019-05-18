@@ -180,3 +180,12 @@ void read_raw_to_eigen(Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>& eigen, 
 	eigen = Eigen::Map<Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>>(&v[0], row_size, col_size);
 }
 
+template <class T>
+void save_param_as_csv(Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> &eigen, std::string filename) {
+	
+	std::ofstream ofs(filename);
+	ofs << eigen;
+	ofs.close();
+	
+	return;
+}
