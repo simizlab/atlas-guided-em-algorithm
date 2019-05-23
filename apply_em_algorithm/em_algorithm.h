@@ -195,7 +195,7 @@ namespace em_algorithm
 					if (weight(s, l) > eps0Weight) {
 						weight_sum += weight(s, l);
 						for (int f = 0; f < num_features; f++) {
-							ave(f, 0) += static_cast<double>(feat_samples.at(f*num_samples + s)) + weight(s, l);
+							ave(f, 0) += static_cast<double>(feat_samples.at(f*num_samples + s)) * weight(s, l);
 						}
 					}
 				} /* Sample loop */

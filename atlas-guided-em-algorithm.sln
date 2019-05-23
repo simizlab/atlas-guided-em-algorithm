@@ -13,6 +13,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "apply_em_algorithm", "apply
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "apply_maximum_a_posteriori", "apply_maximum_a_posteriori\apply_maximum_a_posteriori.vcxproj", "{B87B8835-EB4D-4CE3-A36A-499A1095E78B}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "generate_debug_img", "generate_debug_img\generate_debug_img.vcxproj", "{FBDCD7E6-C441-4321-90F0-B3FAA21DA420}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -61,6 +63,14 @@ Global
 		{B87B8835-EB4D-4CE3-A36A-499A1095E78B}.Release|x64.Build.0 = Release|x64
 		{B87B8835-EB4D-4CE3-A36A-499A1095E78B}.Release|x86.ActiveCfg = Release|Win32
 		{B87B8835-EB4D-4CE3-A36A-499A1095E78B}.Release|x86.Build.0 = Release|Win32
+		{FBDCD7E6-C441-4321-90F0-B3FAA21DA420}.Debug|x64.ActiveCfg = Debug|x64
+		{FBDCD7E6-C441-4321-90F0-B3FAA21DA420}.Debug|x64.Build.0 = Debug|x64
+		{FBDCD7E6-C441-4321-90F0-B3FAA21DA420}.Debug|x86.ActiveCfg = Debug|Win32
+		{FBDCD7E6-C441-4321-90F0-B3FAA21DA420}.Debug|x86.Build.0 = Debug|Win32
+		{FBDCD7E6-C441-4321-90F0-B3FAA21DA420}.Release|x64.ActiveCfg = Release|x64
+		{FBDCD7E6-C441-4321-90F0-B3FAA21DA420}.Release|x64.Build.0 = Release|x64
+		{FBDCD7E6-C441-4321-90F0-B3FAA21DA420}.Release|x86.ActiveCfg = Release|Win32
+		{FBDCD7E6-C441-4321-90F0-B3FAA21DA420}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

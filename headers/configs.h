@@ -4,6 +4,9 @@
 
 const int NDIMS = 3;
 
+#define _DEBUG
+
+#ifndef _DEBUG
 const std::string LABEL_NAMES[] = {"liver", 
 								  "spleen", 
 								  "kidneyL", 
@@ -40,3 +43,19 @@ const std::string TESTTIME_LABEL_NAMES[] = { "liver",
 											"other" };
 
 const int TESTTIME_NUM_LABELS = sizeof(TESTTIME_LABEL_NAMES) / sizeof(TESTTIME_LABEL_NAMES[0]);
+#endif
+const std::string LABEL_NAMES[] = { "class2", "class1"};
+
+const int NUM_LABELS = sizeof(LABEL_NAMES) / sizeof(LABEL_NAMES[0]);
+
+// This label means the stomach contents.
+const int REMOVE_LABEL_NUM = 14;
+
+// Ignored label i.e. hearts
+const int IGNORED_LABEL_NUM = 5;
+
+const std::string TESTTIME_LABEL_NAMES[] = { "class2", "class1" };
+
+const int TESTTIME_NUM_LABELS = sizeof(TESTTIME_LABEL_NAMES) / sizeof(TESTTIME_LABEL_NAMES[0]);
+
+
