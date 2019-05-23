@@ -136,15 +136,15 @@ I evaluate my result in terms of Jaccard Index.
 
 |organs|JI|
 |:---:|:---:|
-|liver|0.873291|
-|spleen|0.561109|
-|kidneyL|0.33408|
-|kidneyR|0.0138403|
-|gallbladder|0|
-|pancreas|0|
-|aorta|0.412388|
-|IVC|0|
-|portal|0|
-|stomachWall|0.116285|
-|oesophagus|0|
-|other|	0.673242|
+|liver|0.862857|
+|spleen|0.616608|
+|kidneyL|0.666968|
+|kidneyR|0.548733|
+|gallbladder|0.187473|
+|pancreas|0.35192|
+|aorta|0.606638|
+|IVC|0.566764|
+|portal|0.0789795|
+|stomachWall|0.13219|
+|oesophagus|0.0801887|
+|other|0.728133|

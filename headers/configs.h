@@ -4,7 +4,7 @@
 
 const int NDIMS = 3;
 
-#define _DEBUG
+//#define _DEBUG
 
 #ifndef _DEBUG
 const std::string LABEL_NAMES[] = {"liver", 
@@ -43,7 +43,8 @@ const std::string TESTTIME_LABEL_NAMES[] = { "liver",
 											"other" };
 
 const int TESTTIME_NUM_LABELS = sizeof(TESTTIME_LABEL_NAMES) / sizeof(TESTTIME_LABEL_NAMES[0]);
-#endif
+
+#else
 const std::string LABEL_NAMES[] = { "class2", "class1"};
 
 const int NUM_LABELS = sizeof(LABEL_NAMES) / sizeof(LABEL_NAMES[0]);
@@ -57,5 +58,5 @@ const int IGNORED_LABEL_NUM = 5;
 const std::string TESTTIME_LABEL_NAMES[] = { "class2", "class1" };
 
 const int TESTTIME_NUM_LABELS = sizeof(TESTTIME_LABEL_NAMES) / sizeof(TESTTIME_LABEL_NAMES[0]);
-
+#endif
 
