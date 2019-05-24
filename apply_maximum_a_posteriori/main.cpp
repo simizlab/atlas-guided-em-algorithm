@@ -169,7 +169,7 @@ int main(int argc, char **argv) {
 			size_t tmp = 0;
 			for (int s = 0; s < se; s++) {
 				if (abd_mask_img.at(s)) {
-					posterior_img.at(s) = posterior.at(tmp++);
+					posterior_img.at(s) = posterior_tmp[tmp++];
 				}
 			}
 			std::string result_dir = output_dir + *case_itr + "/posterior/";
